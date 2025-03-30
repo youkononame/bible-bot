@@ -21,8 +21,9 @@ and the Berean Bible Translation Committee. This text of God's Word has been
 </details>
 
 ## Setup
-Currently, there is no 24/7 hosted version of Bible Bot. You will need to setup and host it yourself.
+Use [this link](https://discord.com/oauth2/authorize?client_id=1355640740549759127) to add the bot to your server.
 
+### Self-hosting
 1. Clone the bot source code and change into the source directory.
 ```bash
 git clone https://github.com/youkononame/bible-bot/
@@ -39,7 +40,7 @@ BOT_TOKEN="Your token here"
 7. Use the install link from your application page to add your bot user to your server.
 8. Run the commands below to start the bot.
 ```bash
-pip install requirements.txt
+pip install -r requirements.txt
 cd src
 python3 bot.py
 ```
