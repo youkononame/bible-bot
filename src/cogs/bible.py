@@ -36,23 +36,31 @@ class PurgeCog(commands.Cog):
             else str(verse_start) + "-" + str(verse_end)
         )
         message = f"**{response["book"]["name"]}** {chapter}:{verse_str}"
+        
         total_verse_count = response["numberOfVerses"]
         used_verse_count = 0
+        started = False
+        last_heading = ""
 
         if verse_end <= total_verse_count:
-            for i, item in enumerate(response["chapter"]["content"]):
+            for item in response["chapter"]["content"]:
                 item_type = item["type"]
 
-                if item_type == "line_break":
+                if item_type == "line_break" and started:
                     message += "\n"
                 elif item_type == "heading":
-                    message += f"{"\n" if i == 0 else "\n\n"}**{"".join(value for value in item["content"])}**{"\n\n" if i ==0 else "\n"}"
+                    last_heading = f"\n\n**{"".join(value for value in item["content"])}**{"\n" if not started else ""}"
+                    message += last_heading if started else ""
 
                 if item_type != "verse":
                     continue
 
                 if not verse_start <= item["number"] <= verse_end:
                     continue
+                
+                if not started:
+                    started = True
+                    message += last_heading if started else ""
 
                 message += " ".join(
                     [
@@ -67,7 +75,7 @@ class PurgeCog(commands.Cog):
                         )
                         for value in item["content"]
                     ]
-                )
+                ) + " "
                 used_verse_count += 1
 
                 if used_verse_count > verse_end - verse_start:

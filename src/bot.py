@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord import app_commands
 
 
-class LibmemLover(commands.Bot):
+class Bot(commands.Bot):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -38,7 +38,7 @@ class LibmemLover(commands.Bot):
             print(f"Failed to sync command tree. Error: {exception}")
 
 
-bot = LibmemLover(
+bot = Bot(
     command_prefix="$", intents=discord.Intents.default(), help_command=None
 )
 
