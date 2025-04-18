@@ -36,7 +36,7 @@ class PurgeCog(commands.Cog):
             else str(verse_start) + "-" + str(verse_end)
         )
         message = f"**{response["book"]["name"]}** {chapter}:{verse_str}"
-        
+
         total_verse_count = response["numberOfVerses"]
         used_verse_count = 0
         started = False
@@ -57,25 +57,28 @@ class PurgeCog(commands.Cog):
 
                 if not verse_start <= item["number"] <= verse_end:
                     continue
-                
+
                 if not started:
                     started = True
                     message += last_heading if started else ""
 
-                message += " ".join(
-                    [
-                        (
-                            value
-                            if type(value) == str
-                            else (
-                                value["text"]
-                                if type(value) == dict and "text" in value
-                                else ""
+                message += (
+                    " ".join(
+                        [
+                            (
+                                value
+                                if type(value) == str
+                                else (
+                                    value["text"]
+                                    if type(value) == dict and "text" in value
+                                    else ""
+                                )
                             )
-                        )
-                        for value in item["content"]
-                    ]
-                ) + " "
+                            for value in item["content"]
+                        ]
+                    )
+                    + " "
+                )
                 used_verse_count += 1
 
                 if used_verse_count > verse_end - verse_start:
@@ -135,7 +138,13 @@ class PurgeCog(commands.Cog):
                 verse_end = temp
 
         verse, ephemeral = self.get_verse(book, chapter, verse_start, verse_end)
-        await interaction.response.send_message(verse, ephemeral=ephemeral)
+        try:
+            await interaction.response.send_message(verse, ephemeral=ephemeral)
+        except discord.HTTPException as e:
+            await interaction.response.send_message(
+                "The requested citation is too long. Please quote fewer verses and try again!",
+                ephemeral=True,
+            )
 
 
 async def setup(bot: commands.Bot) -> None:

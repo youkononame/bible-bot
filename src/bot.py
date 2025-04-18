@@ -38,9 +38,7 @@ class Bot(commands.Bot):
             print(f"Failed to sync command tree. Error: {exception}")
 
 
-bot = Bot(
-    command_prefix="$", intents=discord.Intents.default(), help_command=None
-)
+bot = Bot(command_prefix="$", intents=discord.Intents.default(), help_command=None)
 
 
 @bot.tree.error
